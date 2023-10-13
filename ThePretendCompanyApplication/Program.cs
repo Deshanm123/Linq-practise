@@ -229,6 +229,18 @@ var innerJoinResultsByQuerySyntax =
          DepartmentName = dep.LongName
      };
 
+//transact sql-query
+//SELECT
+//   CONCAT (e.FirstName, '' ,e.LastName) AS FullName,
+//   d.longName AS DepartmentName,
+ //FROM 
+ //  Department d
+ //INNER JOIN
+ //  Employee e
+ //ON
+ // d.Id = e.DepartmentId
+
+// micorsoft recommends to use query syntax because its easeier to read and implement
 foreach (var res in innerJoinResultsByQuerySyntax)
 {
     Console.WriteLine(res.FullName + " works at " + res.DepartmentName);
