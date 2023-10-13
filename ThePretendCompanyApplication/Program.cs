@@ -145,28 +145,78 @@ using TCPExtensions;
 //defered execution happen when you iterate simply,with in the for loop 
 
 //DEFFRERD EXECUTION EXAMPLE
-List<Employee> employeeList = Data.GetEmployees();
-var results = from emp in employeeList.GetHigherSalariedEmployees()
-              select new
-              {
-                  FullName = emp.FirstName + " " + emp.LastName,
-                  AnnualSal = emp.AnnualSalary
-              };
+//List<Employee> employeeList = Data.GetEmployees();
+//var results = from emp in employeeList.GetHigherSalariedEmployees()
+//              select new
+//              {
+//                  FullName = emp.FirstName + " " + emp.LastName,
+//                  AnnualSal = emp.AnnualSalary
+//              };
 
-employeeList.Add(new Employee
-{
-    Id = 5,
-    FirstName = "Sam",
-    LastName = "David",
-    AnnualSalary = 100002,
-    IsManager = true,
-    DepartmentId = 2,
-});
+//employeeList.Add(new Employee
+//{
+//    Id = 5,
+//    FirstName = "Sam",
+//    LastName = "David",
+//    AnnualSalary = 100002,
+//    IsManager = true,
+//    DepartmentId = 2,
+//});
 
-foreach (var emp in results)
+//foreach (var emp in results)
+//{
+//    Console.WriteLine(emp.FullName + " ->" + emp.AnnualSal);
+//}
+/// indeffred execution query get executed during the iteration  therefeore ssam canbe found inthe result set
+
+
+//Immediate execution
+//var employeeList = Data.GetEmployees();
+//var immediateExecutionResults = (from emp  in employeeList.GetHigherSalariedEmployees()
+//                          select new
+//                          {
+//                              FullName = emp.FirstName + " " + emp.LastName,
+//                              AnnualSal = emp.AnnualSalary
+//                          }).ToList();
+
+
+//employeeList.Add(new Employee
+//{
+//    Id = 5,
+//    FirstName = "Sam",
+//    LastName = "Immediate",
+//    AnnualSalary = 100002,
+//    IsManager = true,
+//    DepartmentId = 2,
+//});
+
+//foreach (var emp in immediateExecutionResults)
+//{
+//    Console.WriteLine(emp.FullName + " ->" + emp.AnnualSal);
+//}
+
+
+//ineer join  by method syntax
+var employeeList  = Data.GetEmployees();
+var departmentList = Data.GetDepartments();
+var innerJoinResults = departmentList.Join(
+    employeeList, //outer join set
+    department => department.Id, // key oiin inner data set
+    employee => employee.DepartmentId,// outer key in outer dataset
+    (department, employee) => new
+    {
+        FullName = employee.FirstName + " " + employee.LastName,
+        DepartmentName = department.LongName
+    }
+    );
+
+foreach (var res in innerJoinResults)
 {
-    Console.WriteLine(emp.FullName + " ->" + emp.AnnualSal);
+    Console.WriteLine(res.FullName + "works at " +res.DepartmentName );
 }
+
+
+
 
 
 
