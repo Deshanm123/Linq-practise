@@ -76,71 +76,110 @@ using TCPExtensions;
 //Console.WriteLine($"{lowestSalaryHolder} earns the minimum salary ({lowestSal}) amounng other mates");
 
 
-List<Department> departmentList = Data.GetDepartments();
-List<Employee> employeelist = Data.GetEmployees();
+//List<Department> departmentList = Data.GetDepartments();
+//List<Employee> employeelist = Data.GetEmployees();
 
-Console.WriteLine("Linq -Method Syntax");
+//Console.WriteLine("Linq -Method Syntax");
 
-var employeeRecData = employeelist
-    .Select(e =>
-        new {
-            FullName = e.FirstName + " " + e.LastName,
-            Salary = e.AnnualSalary
+//var employeeRecData = employeelist
+//    .Select(e =>
+//        new {
+//            FullName = e.FirstName + " " + e.LastName,
+//            Salary = e.AnnualSalary
 
-        })
-    .Where(e => e.Salary < 50000)
-    ;
+//        })
+//    .Where(e => e.Salary < 50000)
+//    ;
 
 
-foreach (var employee in employeeRecData)
-{
-    Console.WriteLine($"{employee.FullName,15} earns {employee.Salary,10}");
-}
-Console.ReadKey();
+//foreach (var employee in employeeRecData)
+//{
+//    Console.WriteLine($"{employee.FullName,15} earns {employee.Salary,10}");
+//}
+//Console.ReadKey();
 
-Console.WriteLine("Linq Query syntax");
-var EmployeeDatabyQuery = from emp in employeelist
-                          select new
-                          {
-                              FullName = emp.FirstName + " " + emp.LastName,
-                              Salary = emp.AnnualSalary
-                          };
+//Console.WriteLine("Linq Query syntax");
+//var EmployeeDatabyQuery = from emp in employeelist
+//                          select new
+//                          {
+//                              FullName = emp.FirstName + " " + emp.LastName,
+//                              Salary = emp.AnnualSalary
+//                          };
 
-foreach(var emp in EmployeeDatabyQuery)
-{
-    Console.WriteLine(emp.FullName + " ->" + emp.Salary);
-}
+//foreach(var emp in EmployeeDatabyQuery)
+//{
+//    Console.WriteLine(emp.FullName + " ->" + emp.Salary);
+//}
 
-Console.WriteLine("employees that have graeater ssalaray than 50  k fetched by LINQqueries");
+//Console.WriteLine("employees that have graeater ssalaray than 50  k fetched by LINQqueries");
 
-var empAbvFifty = from emp in employeelist
-                  where emp.AnnualSalary > 50000
-                  select new
-                  {
-                      FullName = emp.FirstName + "" + emp.LastName,
-                      Salary = emp.AnnualSalary
-                  };
+//var empAbvFifty = from emp in employeelist
+//                  where emp.AnnualSalary > 50000
+//                  select new
+//                  {
+//                      FullName = emp.FirstName + "" + emp.LastName,
+//                      Salary = emp.AnnualSalary
+//                  };
 
 //due to dffereed execution we can add this record and expedcrt the record to be in the followiing  
 // dataset 
 
 
-employeelist.Add(
-    new Employee
-    {  
-        FirstName  = "Deshan",
-        LastName = "Maduranga",
-        AnnualSalary = 100000,
-        IsManager = false,
-    }
-   );
-foreach(var emp in empAbvFifty)
-{
-    Console.WriteLine(emp.FullName + " ->" + emp.Salary);
-}
+//employeelist.Add(
+//    new Employee
+//    {  
+//        FirstName  = "Deshan",
+//        LastName = "Maduranga",
+//        AnnualSalary = 100000,
+//        IsManager = false,
+//    }
+//   );
+//foreach(var emp in empAbvFifty)
+//{
+//    Console.WriteLine(emp.FullName + " ->" + emp.Salary);
+//}
 
 
 
 //In LINQ, queries have two different behaviors of execution: immediate and deferred.
 //defered execution happen when you iterate simply,with in the for loop 
 
+//DEFFRERD EXECUTION EXAMPLE
+List<Employee> employeeList = Data.GetEmployees();
+var results = from emp in employeeList.GetHigherSalariedEmployees()
+              select new
+              {
+                  FullName = emp.FirstName + " " + emp.LastName,
+                  AnnualSal = emp.AnnualSalary
+              };
+
+employeeList.Add(new Employee
+{
+    Id = 5,
+    FirstName = "Sam",
+    LastName = "David",
+    AnnualSalary = 100002,
+    IsManager = true,
+    DepartmentId = 2,
+});
+
+foreach (var emp in results)
+{
+    Console.WriteLine(emp.FullName + " ->" + emp.AnnualSal);
+}
+
+
+
+public static class EnumerableCollectionExtensionMethods
+{
+    public static IEnumerable<Employee> GetHigherSalariedEmployees(this IEnumerable<Employee> employees)
+    {
+        foreach(Employee emp in employees)
+        {
+            if(emp.AnnualSalary >= 50000)
+            {
+                yield return emp;  //yeild return instances one at a time, contiune the loop fromthe last return
+            }
+        }
+    }
+}
