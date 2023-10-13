@@ -197,25 +197,42 @@ using TCPExtensions;
 
 
 //ineer join  by method syntax
-var employeeList  = Data.GetEmployees();
+//var employeeList  = Data.GetEmployees();
+//var departmentList = Data.GetDepartments();
+//var innerJoinResults = departmentList.Join(
+//    employeeList, //outer join set
+//    department => department.Id, // key oiin inner data set
+//    employee => employee.DepartmentId,// outer key in outer dataset
+//    (department, employee) => new
+//    {
+//        FullName = employee.FirstName + " " + employee.LastName,
+//        DepartmentName = department.LongName
+//    }
+//    );
+
+//foreach (var res in innerJoinResults)
+//{
+//    Console.WriteLine(res.FullName + "works at " +res.DepartmentName );
+//}
+
+//inner jin by query syntax
+var employeeList = Data.GetEmployees();
 var departmentList = Data.GetDepartments();
-var innerJoinResults = departmentList.Join(
-    employeeList, //outer join set
-    department => department.Id, // key oiin inner data set
-    employee => employee.DepartmentId,// outer key in outer dataset
-    (department, employee) => new
-    {
-        FullName = employee.FirstName + " " + employee.LastName,
-        DepartmentName = department.LongName
-    }
-    );
 
-foreach (var res in innerJoinResults)
+var innerJoinResultsByQuerySyntax =
+     from emp in employeeList
+     join dep in departmentList
+     on emp.DepartmentId equals dep.Id
+     select new
+     {
+         FullName = emp.FirstName +" "+emp.LastName,
+         DepartmentName = dep.LongName
+     };
+
+foreach (var res in innerJoinResultsByQuerySyntax)
 {
-    Console.WriteLine(res.FullName + "works at " +res.DepartmentName );
+    Console.WriteLine(res.FullName + " works at " + res.DepartmentName);
 }
-
-
 
 
 
