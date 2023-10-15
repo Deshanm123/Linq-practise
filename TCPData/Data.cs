@@ -17,7 +17,7 @@ namespace TCPData
                 Id = 1,
                 FirstName = "Bob",
                 LastName = "Jones",
-                AnnualSalary = 60000.3m,
+                AnnualSalary = 60000,
                 IsManager = true,
                 DepartmentId = 1
             };
@@ -27,7 +27,7 @@ namespace TCPData
                 Id = 2,
                 FirstName = "Sarah",
                 LastName = "Jameson",
-                AnnualSalary = 80000.1m,
+                AnnualSalary = 80000,
                 IsManager = true,
                 DepartmentId = 2
             };
@@ -37,7 +37,7 @@ namespace TCPData
                 Id = 3,
                 FirstName = "Douglas",
                 LastName = "Roberts",
-                AnnualSalary = 40000.2m,
+                AnnualSalary = 40000,
                  IsManager = false,
                 DepartmentId = 2
             };
@@ -47,7 +47,7 @@ namespace TCPData
                 Id = 4,
                 FirstName = "Jane",
                 LastName = "Stevens",
-                AnnualSalary = 30000.2m,
+                AnnualSalary = 30000,
                 IsManager = false,
                 DepartmentId = 3
             };
