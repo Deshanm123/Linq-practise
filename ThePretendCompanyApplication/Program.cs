@@ -31,10 +31,10 @@ List<Employee> newEmployeesList = new List<Employee>()
     new Employee{Id= 91,FirstName ="Davy",LastName="Johnson"}
 };
 
-employees.Concat(newEmployeesList);
+IEnumerable<Employee> allEmployees  = employees.Concat(newEmployeesList);
 
 
-foreach (var employee in employees)
+foreach (var employee in allEmployees)
 {
     Console.WriteLine(employee.FirstName +" - " + employee.LastName);
 }
