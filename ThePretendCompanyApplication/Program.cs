@@ -1,30 +1,59 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using TCPData;
 using TCPExtensions;
 
 
 
-var employeeList = Data.GetEmployees();
-var departmentList = Data .GetDepartments();
 
-//lastOrDefault
-//returns the first element when the cindition iis successfully met otherwise it will return default value for the considered data type of that condition
-
-
+//SequenceEqual Evaluation as follows
+////true if the two source sequences are of equal length and their corresponding elements are equal according to the default equality comparer for their type
+//; otherwise, false.
 List<int> oddIntegersList = new List<int>() {1,3,5,7,9 };
-List<int> evenIntegersList = new List<int>() { 2, 4, 6, 8, 10 };
+
+List<int> oddIntegersListClone = new List<int>() {1,3,5,7,9 };
+var result = oddIntegersList.SequenceEqual(oddIntegersListClone);
+Console.WriteLine("Is oddIntegers List is same Seqeunce as oddIntegersListClone ?" + result);
+
+//var reverse = oddIntegersListClone.Reverse();
+//var result2 = oddIntegersList.SequenceEqual();
+oddIntegersListClone.Reverse();
+var newResult = oddIntegersList.SequenceEqual(oddIntegersListClone);
+Console.WriteLine("Is oddIntegers List is same Seqeunce as oddIntegersListClone but its rearranged in order ?" + newResult);
+
+//comparing objects using sequence equal
 
 
-var lasteveninOddNumber = oddIntegersList.LastOrDefault(x => x % 2 == 0);
-if (lasteveninOddNumber != 0)
-    Console.WriteLine("odd number is  " + lasteveninOddNumber);
-else
-    Console.WriteLine("there are no odd numbers in the considered array liist");
 
-var lastOddNumberinOddNumbers = oddIntegersList.LastOrDefault(x => x % 2 == 1);
-if (lastOddNumberinOddNumbers != 0)
-    Console.WriteLine("last odd Number is  " + lastOddNumberinOddNumbers);
-else
-    Console.WriteLine("there are no odd numbers in the considered array liist");
+var employeeList = Data.GetEmployees();
+var employeeListClone = Data.GetEmployees();
+
+
+Console.WriteLine("Comparing objects using SequenceEqual");
+
+var employeeCompareResult= employeeList.SequenceEqual(employeeListClone);
+Console.WriteLine(" employeeList and employeeListClone are two instancces of employee object but are they gonna equal  ?" + newResult);
+//NO 
+
+var empCompareByIEqualityComparer = employeeList.SequenceEqual(employeeListClone ,new EmployeeComparer());
+Console.WriteLine(" \n employeeList and employeeListClone are two instancces of employee object but are they gonna equal  when using IequalityComparer ?" + empCompareByIEqualityComparer);
+
+
+public class EmployeeComparer : IEqualityComparer<Employee>
+{
+    public bool Equals(Employee? x, Employee? y)
+    {
+        if(x.Id == y.Id  && x.FirstName.ToLower() == y.FirstName.ToLower()  && x.LastName == y.LastName)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public int GetHashCode([DisallowNull] Employee obj)
+    {
+        return obj.Id.GetHashCode();
+    }
+}
