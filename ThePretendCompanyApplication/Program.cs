@@ -9,53 +9,22 @@ using TCPExtensions;
 var employeeList = Data.GetEmployees();
 var departmentList = Data .GetDepartments();
 
-
-//ArrayList mixedCollection  = Data.GetHeterogeneousDataCollection();
-//var stringResult = from s in mixedCollection.OfType<string>()
-//                   select s;
-
-//var intResult = from i in mixedCollection.OfType<int>()
-//                select i;
+//First firsOrDEfault 
+//returns the first element when the cindition iis successfully met otherwise it will return default value for the considered data type of that condition
 
 
-
-//Console.WriteLine("Analyzinf strings and writing it down");
-//foreach(var item in stringResult)
-//{
-//    Console.WriteLine(item);
-//}
-
-//Console.WriteLine("Analyzing integers and writing it down");
-//foreach (var item in intResult)
-//{
-//    Console.WriteLine(item);
-//}
+List<int> oddIntegersList = new List<int>() {1,3,5,7,9 };
+List<int> evenIntegersList = new List<int>() { 2, 4, 6, 8, 10 };
 
 
-//var employeeResults = from d in mixedCollection.OfType<Employee>()
-//                        select d;
+var firseveninOddNumber = oddIntegersList.FirstOrDefault(x => x % 2 == 0);
+if (firseveninOddNumber != 0)
+    Console.WriteLine("odd number is  " + firseveninOddNumber);
+else
+    Console.WriteLine("there are no odd numbers in the considered array liist");
 
-//Console.WriteLine("Analyzing Emmployee Object5 and writing it down");
-//foreach (var employee in employeeResults)
-//{
-//    Console.WriteLine($"{employee.FirstName} works and earns {employee.AnnualSalary}");
-//}
-//first employee
-
-
-//ElementAt  - Returns the element at a specified index in a sequence.
-var firstEmployee = employeeList.ElementAt(0);
-Console.WriteLine($"first employee is {firstEmployee.FirstName} employee id {firstEmployee.Id}");
-//if elemennt at x position is not vailable due to x position not exisiting exception is thrown 
-//to avoid that  we use ElementAtOrDefault Method
-int xPosition = 100;
-var xEmployee = employeeList.ElementAtOrDefault(xPosition);
-
-if(xEmployee == null)
-    Console.WriteLine("Employee doesnt exist");
- else
-    Console.WriteLine($"first employee is {xEmployee.FirstName} employee id {xEmployee.Id}");
-
-
-
-
+var firstEvenNumberInEven = evenIntegersList.FirstOrDefault(x => x% 2 == 0);
+if (firstEvenNumberInEven != 0)
+    Console.WriteLine("Even number is  " + firstEvenNumberInEven);
+else
+    Console.WriteLine("there are no odd numbers in the considered array liist");
