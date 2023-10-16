@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using TCPData;
 using TCPExtensions;
 
@@ -87,6 +88,45 @@ else
 {
     Console.WriteLine($" Not Any one of employees have annual annual salaries are above  {annualSalaryCompare}");
 }
+//contains
+var searchEmployee = new Employee()
+{
+    Id = 2,
+    FirstName = "Sarah",
+    LastName = "Jameson",
+    AnnualSalary = 80000,
+    IsManager = true,
+    DepartmentId = 2
+};
+
+//bool containsEmployee = emloyeeList.Contains(searchEmployee);
+
+bool containsEmployee  = employeeList.Contains(searchEmployee);
+
+Console.WriteLine("is employee existing?"+containsEmployee); //return false
+//objects ca be compared using IEqualityComparer
+bool containsEmployeeByComparer = employeeList.Contains(searchEmployee, new EmployeeComparer());
+Console.WriteLine("is employee by IEqualityComparer?"+ containsEmployeeByComparer); //return false
+
+
+public class EmployeeComparer : IEqualityComparer<Employee>
+{
+    public bool Equals(Employee? x, Employee? y)
+    {
+        if(x.Id == y.Id && x.FirstName.ToLower() == y.FirstName.ToLower() && x.LastName == y.LastName)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public int GetHashCode([DisallowNull] Employee obj)
+    {
+        return obj.Id.GetHashCode();
+    }
+}
+
+
 
 public static class EnumerableCollectionExtensionMethods
 {
