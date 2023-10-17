@@ -7,10 +7,37 @@ using TCPData;
 using TCPExtensions;
 
 var employeeList = Data.GetEmployees();
+employeeList.Add(
+    new Employee()
+    {
+        Id=11,
+        FirstName ="Tom",
+        LastName = "Riddle"
+    }
+);
 
-decimal totalSal =  employeeList.Sum(e => e.AnnualSalary);
-Console.WriteLine("Sum of employee Salaries "+ totalSal);
+var employeeListClone = Data.GetEmployees(); 
+
+var result =employeeList.Except(employeeListClone, new EmployeeComparer());
+foreach (var employee in result)
+{
+    Console.WriteLine(employee.FirstName);
+}
 
 
-decimal maximumSal =  employeeList.Max(emp => emp.AnnualSalary);
-Console.WriteLine("MAximum Salary amoung employee is  " + maximumSal);
+public class EmployeeComparer : IEqualityComparer<Employee>
+{
+    public bool Equals(Employee? x, Employee? y)
+    {
+       if(x.Id == y.Id  && x.FirstName == y.FirstName && x.LastName == y.LastName)
+        {
+            return true;
+        }
+       return false;
+    }
+
+    public int GetHashCode([DisallowNull] Employee obj)
+    {
+        return obj.Id.GetHashCode();
+    }
+}
