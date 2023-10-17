@@ -9,15 +9,9 @@ using TCPExtensions;
 //Average
 var employeeList = Data.GetEmployees();
 
-decimal averageSal = employeeList.Average(e => e.AnnualSalary);
-Console.WriteLine("average salary of an employee " + averageSal);
+int totalEmployee =  employeeList.Count();
+Console.WriteLine("Total employee Count "+ totalEmployee);
 
 
-//finding average salary in a particular technology  department
-
-var technologyDep = Data.GetDepartments().FirstOrDefault(dep => dep.LongName == "Technology");
-decimal averageSalaryOfTechnologyEmployee = employeeList
-                                    .Where(emp => emp.DepartmentId == technologyDep.Id)
-                                    .Average(techEmp => techEmp.AnnualSalary);
-
-Console.WriteLine("Average Salary Of Technology Employee" + averageSalaryOfTechnologyEmployee);
+int totalEmployeeInDepartment3 =  employeeList.Count(emp => emp.DepartmentId == 3);
+Console.WriteLine("total number of employees in  department  3 " + totalEmployeeInDepartment3);
