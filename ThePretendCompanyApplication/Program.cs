@@ -5,36 +5,27 @@ using System.Linq;
 using TCPData;
 using TCPExtensions;
 
-
-//concatanattion f list
-
-List<int> oddIntegersList = new List<int>() {1,3,5,7,9 };
-
-List<int> evenIntegersList = new List<int>() {2,4,6,8, };
+//Aggregate functions
 
 
-var numberList = oddIntegersList.Concat(evenIntegersList);
-foreach (var number in numberList)
+var employeeList = Data.GetEmployees();
+decimal totalAnnualSalary = employeeList.Aggregate<Employee, decimal>(0, (totalAnnualSalary, emp) =>
 {
-    Console.WriteLine(number);
-}
+    var bonus = emp.IsManager ? 0.04m : 0.02m;
+    totalAnnualSalary = (emp.AnnualSalary + (emp.AnnualSalary * bonus) ) + totalAnnualSalary;
+    return totalAnnualSalary;
+
+});
+
+Console.WriteLine($"Total Annual salary oof all emloyees with bonus : {totalAnnualSalary} ");
 
 
-
-//Employee 
-
- List<Employee> employees = Data.GetEmployees();
-
-List<Employee> newEmployeesList = new List<Employee>()
+string employeeData = employeeList.Aggregate<Employee, string>("Employeee Annual Salaries including bonus \n", (s, emp) =>
 {
-    new Employee{Id = 90 , FirstName="Jack", LastName="Sparrrow"},
-    new Employee{Id= 91,FirstName ="Davy",LastName="Johnson"}
-};
+    var bonus = emp.IsManager ? 0.04m : 0.02m;
+    s += $"{emp.FirstName} {emp.LastName} - {emp.AnnualSalary + emp.AnnualSalary * bonus} \n";
+    return s;
+});
 
-IEnumerable<Employee> allEmployees  = employees.Concat(newEmployeesList);
 
-
-foreach (var employee in allEmployees)
-{
-    Console.WriteLine(employee.FirstName +" - " + employee.LastName);
-}
+    Console.WriteLine(employeeData);
