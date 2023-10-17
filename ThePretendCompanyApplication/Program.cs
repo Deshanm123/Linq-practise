@@ -6,6 +6,18 @@ using System.Security.Cryptography.X509Certificates;
 using TCPData;
 using TCPExtensions;
 
+
+List<string> omnivores = new List<string>(){ "Dog","Cat","Human","Dolphin"};
+List<string> pets = new List<string>(){ "Dog","Cat"};
+
+var animals = omnivores.Intersect(pets);
+foreach (var animal in animals)
+{
+    Console.WriteLine(animal);
+}
+
+Console.WriteLine("\n intersect \n");
+
 var employeeList = Data.GetEmployees();
 employeeList.Add(
     new Employee()
@@ -15,10 +27,10 @@ employeeList.Add(
         LastName = "Riddle"
     }
 );
-
+ 
 var employeeListClone = Data.GetEmployees(); 
 
-var result =employeeList.Except(employeeListClone, new EmployeeComparer());
+var result =employeeList.Intersect(employeeListClone, new EmployeeComparer());
 foreach (var employee in result)
 {
     Console.WriteLine(employee.FirstName);
