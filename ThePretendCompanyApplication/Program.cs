@@ -6,12 +6,11 @@ using System.Security.Cryptography.X509Certificates;
 using TCPData;
 using TCPExtensions;
 
-//Average
 var employeeList = Data.GetEmployees();
 
-int totalEmployee =  employeeList.Count();
-Console.WriteLine("Total employee Count "+ totalEmployee);
+decimal totalSal =  employeeList.Sum(e => e.AnnualSalary);
+Console.WriteLine("Sum of employee Salaries "+ totalSal);
 
 
-int totalEmployeeInDepartment3 =  employeeList.Count(emp => emp.DepartmentId == 3);
-Console.WriteLine("total number of employees in  department  3 " + totalEmployeeInDepartment3);
+decimal maximumSal =  employeeList.Max(emp => emp.AnnualSalary);
+Console.WriteLine("MAximum Salary amoung employee is  " + maximumSal);
