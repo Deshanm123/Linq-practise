@@ -2,30 +2,22 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using TCPData;
 using TCPExtensions;
 
-//Aggregate functions
-
-
+//Average
 var employeeList = Data.GetEmployees();
-decimal totalAnnualSalary = employeeList.Aggregate<Employee, decimal>(0, (totalAnnualSalary, emp) =>
-{
-    var bonus = emp.IsManager ? 0.04m : 0.02m;
-    totalAnnualSalary = (emp.AnnualSalary + (emp.AnnualSalary * bonus) ) + totalAnnualSalary;
-    return totalAnnualSalary;
 
-});
-
-Console.WriteLine($"Total Annual salary oof all emloyees with bonus : {totalAnnualSalary} ");
+decimal averageSal = employeeList.Average(e => e.AnnualSalary);
+Console.WriteLine("average salary of an employee " + averageSal);
 
 
-string employeeData = employeeList.Aggregate<Employee, string>("Employeee Annual Salaries including bonus \n", (s, emp) =>
-{
-    var bonus = emp.IsManager ? 0.04m : 0.02m;
-    s += $"{emp.FirstName} {emp.LastName} - {emp.AnnualSalary + emp.AnnualSalary * bonus} \n";
-    return s;
-});
+//finding average salary in a particular technology  department
 
+var technologyDep = Data.GetDepartments().FirstOrDefault(dep => dep.LongName == "Technology");
+decimal averageSalaryOfTechnologyEmployee = employeeList
+                                    .Where(emp => emp.DepartmentId == technologyDep.Id)
+                                    .Average(techEmp => techEmp.AnnualSalary);
 
-    Console.WriteLine(employeeData);
+Console.WriteLine("Average Salary Of Technology Employee" + averageSalaryOfTechnologyEmployee);
