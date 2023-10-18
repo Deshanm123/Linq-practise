@@ -1,63 +1,33 @@
-﻿using System.Collections;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using TCPData;
-using TCPExtensions;
+﻿using TCPData;
+
+//to list operator
+IEnumerable<Employee> Employees = from emp in Data.GetEmployees()
+                                  where emp.AnnualSalary > 50000
+                                  select emp;
+
+List<Employee> employeeList = Employees.ToList();
 
 
-List<string> omnivores = new List<string>(){ "Dog","Cat","Human","Dolphin"};
-List<string> pets = new List<string>(){ "Dog","Cat","Spiders"};
 
-var animals = omnivores.Union(pets);
-foreach (var animal in animals)
+//ToDictionary
+Console.WriteLine("\n Dictionary");
+Dictionary<int, Employee> dictionary = (from emp in employeeList where emp.AnnualSalary > 50000 select emp).ToDictionary<Employee, int>(e => e.Id);
+
+foreach (var key in dictionary.Keys)
 {
-    Console.WriteLine(animal);
+    Console.WriteLine($"Key : {key} Value : {dictionary[key].FirstName} {dictionary[key].LastName}" );
 }
 
-Console.WriteLine("\n Employee Union ");
+//ToArray
+IEnumerable<Employee> result = from employee in employeeList
+             where employee.AnnualSalary > 1000
+             select employee;
 
-var employeeList = Data.GetEmployees();
-employeeList.Add(
-    new Employee()
-    {
-        Id = 11,
-        FirstName = "Tom",
-        LastName = "Riddle"
-    }
-);
+Employee[] empArr = result.ToArray();
 
-var employeeListClone = Data.GetEmployees();
-employeeListClone.Add(
-     new Employee()
-     {
-         Id= 12,
-         FirstName = "Sirius",
-         LastName ="Black"
-     }
-    );
-var result = employeeList.Union(employeeListClone,new EmployeeComparer() );
-//var result =employeeList.Intersect(employeeListClone, new EmployeeComparer());
-foreach (var employee in result)
+foreach(var emp in empArr)
 {
-    Console.WriteLine(employee.FirstName);
+    Console.WriteLine($"{emp.Id,10} - {emp.FirstName,30} ");
 }
 
 
-public class EmployeeComparer : IEqualityComparer<Employee>
-{
-    public bool Equals(Employee? x, Employee? y)
-    {
-       if(x.Id == y.Id  && x.FirstName == y.FirstName && x.LastName == y.LastName)
-        {
-            return true;
-        }
-       return false;
-    }
-
-    public int GetHashCode([DisallowNull] Employee obj)
-    {
-        return obj.Id.GetHashCode();
-    }
-}
