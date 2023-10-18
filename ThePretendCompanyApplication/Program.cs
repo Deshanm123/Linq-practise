@@ -8,29 +8,37 @@ using TCPExtensions;
 
 
 List<string> omnivores = new List<string>(){ "Dog","Cat","Human","Dolphin"};
-List<string> pets = new List<string>(){ "Dog","Cat"};
+List<string> pets = new List<string>(){ "Dog","Cat","Spiders"};
 
-var animals = omnivores.Intersect(pets);
+var animals = omnivores.Union(pets);
 foreach (var animal in animals)
 {
     Console.WriteLine(animal);
 }
 
-Console.WriteLine("\n intersect \n");
+Console.WriteLine("\n Employee Union ");
 
 var employeeList = Data.GetEmployees();
 employeeList.Add(
     new Employee()
     {
-        Id=11,
-        FirstName ="Tom",
+        Id = 11,
+        FirstName = "Tom",
         LastName = "Riddle"
     }
 );
- 
-var employeeListClone = Data.GetEmployees(); 
 
-var result =employeeList.Intersect(employeeListClone, new EmployeeComparer());
+var employeeListClone = Data.GetEmployees();
+employeeListClone.Add(
+     new Employee()
+     {
+         Id= 12,
+         FirstName = "Sirius",
+         LastName ="Black"
+     }
+    );
+var result = employeeList.Union(employeeListClone,new EmployeeComparer() );
+//var result =employeeList.Intersect(employeeListClone, new EmployeeComparer());
 foreach (var employee in result)
 {
     Console.WriteLine(employee.FirstName);
