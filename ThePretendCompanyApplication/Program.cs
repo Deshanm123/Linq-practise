@@ -1,18 +1,25 @@
-﻿using TCPData;
+﻿using System.Runtime.Intrinsics.Arm;
+using TCPData;
 
 var employeeList =  Data.GetEmployees();
+var departmentList = Data.GetDepartments(employeeList);
 
-//into keyword
+//logging the all the employee names in departments
+//<IEnumerable<IEnumerable<Employee>>
+var employeesInDep = departmentList.Select(dep => dep.Employees);
 
-var results = from emp in employeeList
-              where emp.AnnualSalary > 50000
-              select emp
-              into Highearners
-              where Highearners.IsManager == true
-              select Highearners;
-
-
-foreach (var result in results)
+foreach(var dep in employeesInDep)
 {
-    Console.WriteLine(result.FirstName , result.IsManager );
+    foreach(var emp in dep)
+    {
+        Console.WriteLine(emp.FirstName + " " + emp.LastName);
+    }
+}
+
+//logging the all the employee names in departments using select Many
+var employeesinDep = departmentList.SelectMany(dep => dep.Employees);
+
+foreach (var emp in employeesinDep)
+{
+    Console.WriteLine(emp.FirstName + " " + emp.LastName);
 }
