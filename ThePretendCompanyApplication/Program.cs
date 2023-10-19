@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TCPData;
 
 
 Customer c1 = new Customer()
@@ -15,7 +16,7 @@ Customer c2 = new Customer()
 };
 Customer c3 = new Customer()
 {
-    Id = 101,
+    Id = 103,
     customerName = "David Goggins",
     salary = 12220
 };
@@ -47,20 +48,68 @@ foreach(KeyValuePair<int,Customer> cust in customerDictionary)
 {
     Console.WriteLine($"Key {cust.Key}"); // key part in Key Value pair
     Customer customer = cust.Value;  //Value part in key Value pair
-
     Console.WriteLine($"Id {customer.Id} Name {customer.customerName} ");
-
 
 }
 
+Console.WriteLine("****");
+Console.ReadKey();
+Customer custInstance;
+if (customerDictionary.TryGetValue(101,out custInstance))
+{
+   Console.WriteLine(custInstance.customerName +":"+ custInstance.salary);
+}
+else
+{
+    Console.WriteLine("The customer  is not found");
+}
+Console.WriteLine("Total items ={0}", customerDictionary.Count(kvp => kvp.Value.salary > 4000));
 
 
+//Removing item from dictionary
+customerDictionary.Remove(103);
+
+//Array to Dictionary
+Employee employee1 = new Employee
+{
+    Id = 1,
+    FirstName = "Bob",
+    LastName = "Jones",
+    AnnualSalary = 60000,
+    IsManager = true,
+    DepartmentId = 1
+};
+
+Employee employee2 = new Employee
+{
+    Id = 2,
+    FirstName = "Sarah",
+    LastName = "Jameson",
+    AnnualSalary = 80000,
+    IsManager = true,
+    DepartmentId = 2
+};
+
+Employee[] empArr = { employee1, employee2 };
+Dictionary<int, Employee> employeeDictionary = empArr.ToDictionary(emp => emp.Id, emp => emp);
+foreach(KeyValuePair<int,Employee> kvp in employeeDictionary)
+{
+    Console.WriteLine(kvp.Value.Id  +" "+ kvp.Value.FirstName);
+}
+
+//List
+List<Department> departmentList = Data.GetDepartments();
+Dictionary<int,Department> departmentDictionary =  departmentList.ToDictionary(dep => dep.Id, dep => dep);
+
+foreach(KeyValuePair<int,Department> department in departmentDictionary)
+{
+    Console.WriteLine(department.Value.LongName );
+}
 
 public class Customer
 {
     public int Id { get; set; }
     public string  customerName { get; set; }
-
     public decimal salary { get; set; }
 }
 
