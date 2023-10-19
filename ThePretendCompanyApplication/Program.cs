@@ -2,19 +2,17 @@
 
 var employeeList =  Data.GetEmployees();
 
+//into keyword
 
-var results = from employee in employeeList
-              let initials = employee.FirstName.Substring(0,1).ToUpper() + employee.LastName.Substring(0,1).ToUpper()
-              let annualSalaryPlusBonus = employee.IsManager ? employee.AnnualSalary + employee.AnnualSalary * 0.6m : employee.AnnualSalary + employee.AnnualSalary * 0.4m
-              select new
-              {
-                  Initials = initials,
-                  FullName = employee.FirstName + "" + employee.LastName,
-                  TotalEarnings = annualSalaryPlusBonus,
-              };
+var results = from emp in employeeList
+              where emp.AnnualSalary > 50000
+              select emp
+              into Highearners
+              where Highearners.IsManager == true
+              select Highearners;
 
 
-foreach(var record in results)
+foreach (var result in results)
 {
-    Console.WriteLine(record.Initials +" "+ record.FullName +" earns " +record.TotalEarnings);
+    Console.WriteLine(result.FirstName , result.IsManager );
 }
